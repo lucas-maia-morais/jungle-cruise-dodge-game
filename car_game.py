@@ -1,3 +1,5 @@
+from cgitb import small
+from genericpath import samestat
 import pygame
 pygame.init()
 
@@ -9,13 +11,21 @@ import random
 
 # color values
 green = (0,200,0)
-red = (255,0,0)
-blue = (0,0,255)
+light_green = (0,255,0)
+red = (200,0,0)
+light_red = (255,0,0)
+blue = (0,0,200)
+light_blue = (0,0,255)
 
 # the screen
 width = 800
 height = 600
 screen = pygame.display.set_mode((width,height))
+
+# text_object_function
+def text_object(text, font):
+    textSurface = font.render(text, True, (0,0,0))
+    return textSurface, textSurface.get_rect()
 
 # loading the image
 carimg = pygame.image.load("car1.jpg")
@@ -34,10 +44,43 @@ def intro_loop():
         font = pygame.font.SysFont(None, 190)
         title = font.render("CAR GAME", True, (0,0,0))
         screen.blit(title,(50,50))
-        pygame.draw.rect(screen,green,(80,500,150,50))
-        pygame.draw.rect(screen,blue,(320,500,150,50))
-        pygame.draw.rect(screen,red,(580,500,150,50))
+        mouse = pygame.mouse.get_pos()
+        click = pygame.mouse.get_pressed()
 
+        if mouse[0] > 80 and mouse[0] < 230 and mouse[1] > 500 and mouse[1] < 550:
+            pygame.draw.rect(screen, light_green, (80,500,150,50))
+            if click == (True, False, False):
+                game_loop()
+        else:
+            pygame.draw.rect(screen,green,(80,500,150,50))
+
+        smallText = pygame.font.Font("freesansbold.ttf", 20)
+        textSurface, textRect = text_object("START", smallText)
+        textRect.center = ((80 + (150/2)),(500+(50/2)))
+        screen.blit(textSurface,textRect)
+        
+        if 470 > mouse[0] > 320 and 550 > mouse[1] > 500:
+            pygame.draw.rect(screen,light_blue,(320,500,150,50))
+        else:
+            pygame.draw.rect(screen,blue,(320,500,150,50))
+
+        smallText = pygame.font.Font("freesansbold.ttf", 20)
+        textSurface, textRect = text_object("INSTRUCTIONS", smallText)
+        textRect.center = ((320 + (150/2)),(500+(50/2)))
+        screen.blit(textSurface,textRect)
+
+        if 580 + 150 > mouse[0] > 580 and 500 + 50 > mouse[1] > 500:
+            pygame.draw.rect(screen,light_red,(580,500,150,50))
+            if click == (1,0,0):
+                pygame.quit()
+                quit()
+        else:
+            pygame.draw.rect(screen,red,(580,500,150,50))
+
+        smallText = pygame.font.Font("freesansbold.ttf", 20)
+        textSurface, textRect = text_object("QUIT", smallText)
+        textRect.center = ((580 + (150/2)),(500+(50/2)))
+        screen.blit(textSurface,textRect)
 
         pygame.display.update()
 
@@ -128,20 +171,20 @@ def game_loop():
                 print("Clicked")
                 bumped = True
 
-        # moving in x-y coordinates
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                x_change = -5
-            if event.key == pygame.K_RIGHT:
-                x_change = 5
-            if event.key == pygame.K_s:
-                obstacle_speed += 2
-            if event.key == pygame.K_b:
-                obstacle_speed -= 2
-        
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                x_change = 0
+            # moving in x-y coordinates
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    x_change = -5
+                if event.key == pygame.K_RIGHT:
+                    x_change = 5
+                if event.key == pygame.K_s:
+                    obstacle_speed += 2
+                if event.key == pygame.K_b:
+                    obstacle_speed -= 2
+            
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                    x_change = 0
         
         x += x_change
 
