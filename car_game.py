@@ -1,4 +1,4 @@
-from cgitb import small
+rom cgitb import small
 from genericpath import samestat
 import pygame
 pygame.init()
@@ -28,7 +28,7 @@ def text_object(text, font):
     return textSurface, textSurface.get_rect()
 
 # loading the image
-carimg = pygame.image.load("car1.jpg")
+carimg = pygame.image.load("shiphero.jpg")
 
 intro_image = pygame.image.load("background.jpg")
 
@@ -41,8 +41,8 @@ def intro_loop():
                 quit()
                 sys.exit()
         screen.blit(intro_image,(0,0))
-        font = pygame.font.SysFont(None, 190)
-        title = font.render("CAR GAME", True, (0,0,0))
+        font = pygame.font.SysFont(None, 120)
+        title = font.render("JUNGLE CRUISE", True, (0,0,0))
         screen.blit(title,(50,50))
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
@@ -89,12 +89,10 @@ car_width = 56
 
 # loading all images
 grass = pygame.image.load("grass.jpg")
-yellow_strip = pygame.image.load("yellow_strip.jpg")
-strip = pygame.image.load("strip.jpg")
 
 # crashed message
 myfont = pygame.font.SysFont("None", 100)
-render_text = myfont.render("CAR CRASHED", 1, (0,0,0))
+render_text = myfont.render("SHIP CRASHED", 1, (0,0,0))
 
 
 # time module
@@ -102,7 +100,7 @@ clock = pygame.time.Clock()
 clock.tick(100)
 
 # For the caption
-pygame.display.set_caption("Racing")
+pygame.display.set_caption("Run")
 
 # Function for the obstacle
 def obstacle(obs_x, obs_y, obs):
@@ -127,10 +125,6 @@ def obstacle(obs_x, obs_y, obs):
 def background():
     screen.blit(grass, (0,0))
     screen.blit(grass, (700,0))
-    for i in range(7):
-        screen.blit(yellow_strip,(400,100*i))
-    screen.blit(strip, (120,0))
-    screen.blit(strip, (680,0))
 
 # function for score card
 def score_card(car_passed, score):
@@ -157,7 +151,7 @@ def game_loop():
     obs_x = random.randrange(200, 650)
     obs_y = -750
     enemy_width = 56
-    enemy_height = 125
+    enemy_height = 110
     car_passed = 0
     score = 0
     level = 0
@@ -190,7 +184,7 @@ def game_loop():
 
         # background color
 
-        screen.fill((119,119,119))
+        screen.fill((0,0,200))
         background()
         # obs_y -= (obstacle_speed/4)
         obstacle(obs_x,obs_y,obs)
@@ -248,4 +242,3 @@ intro_loop()
 game_loop()
 pygame.quit()
 quit()
-
