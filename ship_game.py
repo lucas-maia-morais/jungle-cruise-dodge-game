@@ -28,10 +28,9 @@ def text_object(text, font):
     return textSurface, textSurface.get_rect()
 
 # loading the image
-carimg = pygame.image.load("car1.jpg")
+carimg = pygame.image.load("shiphero.jpg")
 
 intro_image = pygame.image.load("background.jpg")
-instruction_background = pygame.image.load("background2.jpg")
 
 def intro_loop():
     intro = True
@@ -42,8 +41,8 @@ def intro_loop():
                 quit()
                 sys.exit()
         screen.blit(intro_image,(0,0))
-        font = pygame.font.SysFont(None, 190)
-        title = font.render("CAR GAME", True, (0,0,0))
+        font = pygame.font.SysFont(None, 120)
+        title = font.render("JUNGLE CRUISE", True, (0,0,0))
         screen.blit(title,(50,50))
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
@@ -51,7 +50,7 @@ def intro_loop():
         if mouse[0] > 80 and mouse[0] < 230 and mouse[1] > 500 and mouse[1] < 550:
             pygame.draw.rect(screen, light_green, (80,500,150,50))
             if click == (True, False, False):
-                countdown()
+                game_loop()
         else:
             pygame.draw.rect(screen,green,(80,500,150,50))
 
@@ -90,151 +89,18 @@ car_width = 56
 
 # loading all images
 grass = pygame.image.load("grass.jpg")
-yellow_strip = pygame.image.load("yellow_strip.jpg")
-strip = pygame.image.load("strip.jpg")
 
 # crashed message
 myfont = pygame.font.SysFont("None", 100)
-render_text = myfont.render("CAR CRASHED", 1, (0,0,0))
+render_text = myfont.render("SHIP CRASHED", 1, (0,0,0))
 
 
 # time module
 clock = pygame.time.Clock()
 clock.tick(100)
 
-def paused():
-    pause = True
-    while pause:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-                sys.exit()
-
-        screen.blit(instruction_background,(0,0))
-
-        largetext = pygame.font.Font("freesansbold.ttf",115)
-        textSurf,textRect = text_object("PAUSED", largetext)
-        textRect.center = ((400),(300))
-        screen.blit(textSurf,textRect)
-
-        mouse = pygame.mouse.get_pos()
-        click = pygame.mouse.get_pressed()
-
-        # for continue
-        if mouse[0] > 100 and mouse[0] < 250 and mouse[1] > 450 and mouse[1] < 500:
-            pygame.draw.rect(screen,light_green,(100,450,150,50))
-            if click == (1,0,0):
-                pause = False
-        else:
-            pygame.draw.rect(screen,green,(100,450,150,50))
-        smallText = pygame.font.Font("freesansbold.ttf",20)
-        textSurf,textRect = text_object("CONTINUE", smallText)
-        textRect.center = ((100+(150/2)),(450+(50/2)))
-        screen.blit(textSurf, textRect)
-
-        # for restart
-        if mouse[0] > 350 and mouse[0] < 500 and mouse[1] > 450 and mouse[1] < 500:
-            pygame.draw.rect(screen,light_blue,(350,450,150,50))
-            if click == (1,0,0):
-                game_loop()
-        else:
-            pygame.draw.rect(screen,blue,(350,450,150,50))
-        smallText = pygame.font.Font("freesansbold.ttf",20)
-        textSurf,textRect = text_object("RESTART", smallText)
-        textRect.center = ((350+(150/2)),(450+(50/2)))
-        screen.blit(textSurf, textRect)
-
-        # for main menu
-        if mouse[0] > 600 and mouse[0] < 750 and mouse[1] > 450 and mouse[1] < 500:
-            pygame.draw.rect(screen,light_red,(600,450,150,50))
-            if click == (1,0,0):
-                intro_loop()
-        else:
-            pygame.draw.rect(screen,red,(600,450,150,50))
-        smallText = pygame.font.Font("freesansbold.ttf",20)
-        textSurf,textRect = text_object("MAIN MENU", smallText)
-        textRect.center = ((600+(150/2)),(450+(50/2)))
-        screen.blit(textSurf, textRect)
-
-        pygame.display.update()
-        clock.tick(30)
-
 # For the caption
-pygame.display.set_caption("Racing")
-
-def countdown_background():
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            quit()
-            sys.quit()
-    font = pygame.font.SysFont(None,35)
-    x = (width*0.45)
-    y = (height*0.8)
-    screen.blit(grass, (0,0))
-    screen.blit(grass, (700,0))
-    for i in range(7):
-        screen.blit(yellow_strip,(400,100*i))
-    screen.blit(strip, (120,0))
-    screen.blit(strip, (680,0))
-    screen.blit(carimg,(x,y))
-    passed = font.render("Passed: 0", True,(255,255,255))
-    score = font.render("Score: 0", True, (0,0,0))
-    screen.blit(passed, (0,50))
-    screen.blit(passed, (0,100))
-
-# Actual countdown method
-def countdown():
-    countdown = True
-    while countdown:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-                sys.exit()
-
-        screen.fill((119,118,110))
-        countdown_background()
-        largetext = pygame.font.Font("freesansbold.ttf",115)
-        textSurf,textRect = text_object("3",largetext)
-        textRect.center = ((width/2),(height/2))
-        screen.blit(textSurf,textRect)
-
-        pygame.display.update()
-        clock.tick(1)
-        
-        screen.fill((119,118,110))
-        countdown_background()
-        largetext = pygame.font.Font("freesansbold.ttf",115)
-        textSurf,textRect = text_object("2",largetext)
-        textRect.center = ((width/2),(height/2))
-        screen.blit(textSurf,textRect)
-
-        pygame.display.update()
-        clock.tick(1)
-
-        screen.fill((119,118,110))
-        countdown_background()
-        largetext = pygame.font.Font("freesansbold.ttf",115)
-        textSurf,textRect = text_object("1",largetext)
-        textRect.center = ((width/2),(height/2))
-        screen.blit(textSurf,textRect)
-        
-        pygame.display.update()
-        clock.tick(1)
-
-        screen.fill((119,118,110))
-        countdown_background()
-        largetext = pygame.font.Font("freesansbold.ttf",115)
-        textSurf,textRect = text_object("GO",largetext)
-        textRect.center = ((width/2),(height/2))
-        screen.blit(textSurf,textRect)
-        
-        pygame.display.update()
-        clock.tick(1)
-        
-        game_loop()
+pygame.display.set_caption("Run")
 
 # Function for the obstacle
 def obstacle(obs_x, obs_y, obs):
@@ -259,10 +125,6 @@ def obstacle(obs_x, obs_y, obs):
 def background():
     screen.blit(grass, (0,0))
     screen.blit(grass, (700,0))
-    for i in range(7):
-        screen.blit(yellow_strip,(400,100*i))
-    screen.blit(strip, (120,0))
-    screen.blit(strip, (680,0))
 
 # function for score card
 def score_card(car_passed, score):
@@ -289,7 +151,7 @@ def game_loop():
     obs_x = random.randrange(200, 650)
     obs_y = -750
     enemy_width = 56
-    enemy_height = 125
+    enemy_height = 110
     car_passed = 0
     score = 0
     level = 0
@@ -322,7 +184,7 @@ def game_loop():
 
         # background color
 
-        screen.fill((119,119,119))
+        screen.fill((0,0,200))
         background()
         # obs_y -= (obstacle_speed/4)
         obstacle(obs_x,obs_y,obs)
@@ -370,21 +232,6 @@ def game_loop():
 
             # left side:
             # if x < obs_x + obs_width or x+car_width < obs_x + enemy_width
-        pygame.draw.rect(screen,blue,(650,0,150,50))
-
-        mouse = pygame.mouse.get_pos()
-        click = pygame.mouse.get_pressed()
-        if mouse[0] > 650 and mouse[0] < 800 and mouse[1] > 0 and mouse[1] < 50:
-            pygame.draw.rect(screen,light_blue,(650,0,150,50))
-            if click == (1,0,0):
-                paused()
-        else:
-            pygame.draw.rect(screen,blue,(650,0,150,50))
-
-        smalltext = pygame.font.Font("freesansbold.ttf",30)
-        textSurf, textRect = text_object("PAUSE",smalltext)
-        textRect.center = ((650+(150/2)),(0+(50/2)))
-        screen.blit(textSurf, textRect)
 
         #updating the game
         pygame.display.update()
