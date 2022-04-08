@@ -14,7 +14,7 @@ boat = pygame.image.load("images/boat.jpg")
 cruise = pygame.image.load("images/cruise.png")
 stone = pygame.image.load("images/stone.png")
 pirate = pygame.image.load("images/pirate.png")
-aligator = pygame.image.load("images/aligator.png")
+aligator = pygame.image.load("images/aligator.jpg")
 
 # text_object_function
 def text_object(text, font):

@@ -100,7 +100,7 @@ def countdown_background(s):
 
     boat = pygame.transform.scale(aux.boat, (s.width*0.1, s.height*0.15))
     s.screen.blit(boat,(x,y))
-    score_card(s, 0, 0)
+    score_card(s, 0, 0, 0)
 
 
 def game_loop(s,clock):
@@ -158,7 +158,7 @@ def game_loop(s,clock):
         player.show(s)
 
         # calling score_card function
-        score_card(s, env.car_passed, env.score)
+        score_card(s, env.car_passed, env.score, env.level)
 
 
         if player.x > (0.85 - player.width/2)*s.width or player.x < (0.15 + player.width/2)*s.width:            
@@ -222,7 +222,7 @@ def game_loop(s,clock):
 
         #updating the game
         pygame.display.update()
-        clock.tick(10)
+        clock.tick(20)
 
 
 def background(s):
@@ -234,12 +234,14 @@ def background(s):
 
 
 # function for score card
-def score_card(s, obstacle_passed, score):
+def score_card(s, obstacle_passed, score, level):
     font = pygame.font.SysFont(None, 35)
     passed = font.render("Passed: "+str(obstacle_passed), True, (255,255,255))
-    score = font.render("Score: "+str(score), True, (0,0,0))
+    score = font.render("Score: "+str(score), True, (255,255,255))
+    level = font.render("LEVEL: "+str(level), True, (255,255,255))
     s.screen.blit(passed, (0,50))
     s.screen.blit(score, (0,100))
+    s.screen.blit(level, (0,150))
 
 def paused(s, clock):
     pause = True
@@ -299,4 +301,4 @@ def paused(s, clock):
         s.screen.blit(textSurf, textRect)
 
         pygame.display.update()
-        clock.tick(30)
+        clock.tick(10)
