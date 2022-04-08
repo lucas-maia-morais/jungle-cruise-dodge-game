@@ -39,8 +39,20 @@ class Obstacle(Elements):
     def player():
         return False
 
-    def show(self,s):
+    def show(self,s, type=0):
         # image appearing
-        cruise = pygame.transform.rotate(aux.cruise, -90)
-        cruise = pygame.transform.scale(cruise, (s.width*0.1, s.height*0.15))
-        s.screen.blit(cruise,(self.x,self.y))
+        if type == 0:
+            cruise = pygame.transform.rotate(aux.cruise, -90)
+            cruise = pygame.transform.scale(cruise, (s.width*0.1, s.height*0.15))
+            s.screen.blit(cruise,(self.x,self.y))
+        elif type == 1:
+            stone = pygame.transform.scale(aux.stone, (s.width*0.1, s.height*0.15))
+            s.screen.blit(stone,(self.x,self.y))
+        elif type == 2:
+            pirate = pygame.transform.rotate(aux.pirate, -180)
+            pirate = pygame.transform.scale(pirate, (s.width*0.1, s.height*0.15))
+            s.screen.blit(pirate,(self.x,self.y))
+        elif type == 3:
+            aligator = pygame.transform.rotate(aux.aligator, -180)
+            aligator = pygame.transform.scale(aligator, (s.width*0.1, s.height*0.15))
+            s.screen.blit(aligator,(self.x,self.y))

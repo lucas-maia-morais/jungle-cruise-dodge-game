@@ -76,7 +76,7 @@ def countdown(s,clock):
         
         countdown = ['3','2','1','GO!']
         for count in countdown:
-            s.screen.fill((119,118,110))
+            s.screen.fill((30,116,187))
             countdown_background(s)
             largetext = pygame.font.Font("freesansbold.ttf",115)
             textSurf,textRect = aux.text_object(count,largetext)
@@ -111,6 +111,8 @@ def game_loop(s,clock):
     x_change = 0
     y_change = 0
     obs = elements.Obstacle(random.uniform(0.15, 0.75)*s.width, 0)
+    type = random.randint(1,3)
+    obs2 = elements.Obstacle(random.uniform(0.15, 0.75)*s.width, -random.uniform(0, 0.3)*s.width)
 
     #close button
     while not env.bumped:
@@ -146,9 +148,11 @@ def game_loop(s,clock):
         
         background(s)
         obs.show(s)
+        obs2.show(s, type)
 
         # position of obstacle
         obs.y += env.obstacle_speed
+        obs2.y += env.obstacle_speed
 
         # calling to print player
         player.show(s)
@@ -170,7 +174,7 @@ def game_loop(s,clock):
             obs_x = random.uniform(0.15, 0.75)*s.width
             obs = elements.Obstacle(obs_x, obs_y)
             env.car_passed += 1
-            score = env.car_passed * 10
+            env.score = env.car_passed * 10
             if int(env.car_passed) % 10 == 0:
                 env.level += 1
                 env.obstacle_speed += 2
@@ -179,6 +183,12 @@ def game_loop(s,clock):
                 s.screen.blit(level_text,(s.width*0.1,s.height*0.5))
                 pygame.display.update()
                 time.sleep(3)
+
+        if obs2.y > s.height:
+            type = random.randint(1,3)
+            obs_y = 0 - random.uniform(0.15, 0.5)*s.height
+            obs_x = random.uniform(0.15, 0.75)*s.width
+            obs2 = elements.Obstacle(obs_x, obs_y)
 
         if ((player.y < obs.y + 0.15*s.height) and (player.y + 0.15*s.height > obs.y)):
             # if player.x > obs.y  and player.x < obs.x + 0.1*s.width or player.x + 0.1*s.width > obs.x and player.x + 0.1*s.width < obs.x + 0.1*s.width:
@@ -216,7 +226,7 @@ def game_loop(s,clock):
 
 
 def background(s):
-    s.screen.fill((182,201,249))
+    s.screen.fill((30,116,187))
     forest = aux.forest
     forest = pygame.transform.scale(forest, (s.width*.15, s.height))
     s.screen.blit(forest, (0,0))

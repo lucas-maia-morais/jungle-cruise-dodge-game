@@ -12,6 +12,9 @@ light_blue = (0,0,255)
 forest = pygame.image.load("images/forest.jpg")
 boat = pygame.image.load("images/boat.jpg")
 cruise = pygame.image.load("images/cruise.png")
+stone = pygame.image.load("images/stone.png")
+pirate = pygame.image.load("images/pirate.png")
+aligator = pygame.image.load("images/aligator.png")
 
 # text_object_function
 def text_object(text, font):
