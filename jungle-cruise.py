@@ -9,9 +9,12 @@ if __name__ == '__main__':
 
     # time module
     clock = pygame.time.Clock()
-    clock.tick(100)
+    clock.tick(10)
 
     # Inicializar tela
 
     s = screen.Screen()
     pages.intro_page(s,clock)
+
+    pygame.quit()
+    quit()

@@ -125,9 +125,9 @@ def game_loop(s,clock):
                     x_change = -0.05*s.width
                 if event.key == pygame.K_RIGHT:
                     x_change =  0.05*s.width
-                if event.key == pygame.UP:
+                if event.key == pygame.K_UP:
                     y_change = -0.05*s.height
-                if event.key == pygame.DOWN:
+                if event.key == pygame.K_DOWN:
                     y_change =  0.05*s.height
                 if event.key == pygame.K_s:
                     env.obstacle_speed += 2
@@ -137,7 +137,7 @@ def game_loop(s,clock):
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                     x_change = 0
-                if event.key == pygame.K_UP or event.key == pygame.DOWN:
+                if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                     y_change = 0
         
         player.x += x_change
@@ -145,6 +145,7 @@ def game_loop(s,clock):
 
         
         background(s)
+        obs.show(s)
 
         # position of obstacle
         obs.y += env.obstacle_speed
@@ -157,16 +158,17 @@ def game_loop(s,clock):
 
 
         if player.x > (0.85 - player.width/2)*s.width or player.x < (0.15 + player.width/2)*s.width:            
-            s.screen.blit(aux.ENCALHOU, (s.width*0.1,s.height*0.5))
+            s.screen.blit(aux.ENCALHOU(), (s.width*0.1,s.height*0.5))
             pygame.display.update()
             time.sleep(5)
-            game_loop()
+            game_loop(s,clock)
 
+        print(obs.y)
 
         if obs.y > s.height:
             obs_y = 0 - 0.15*s.height
             obs_x = random.uniform(0.15, 0.75)*s.width
-            elements.Obstacle(obs_x, obs_y)
+            obs = elements.Obstacle(obs_x, obs_y)
             env.car_passed += 1
             score = env.car_passed * 10
             if int(env.car_passed) % 10 == 0:
@@ -178,13 +180,14 @@ def game_loop(s,clock):
                 pygame.display.update()
                 time.sleep(3)
 
-        if player.y < obs.y + 0.15*s.height:
-            if player.x > obs.y  and player.x < obs.x + 0.1*s.width or player.x + 0.1*s.width > obs.x and player.x + 0.1*s.width < obs.x + 0.1*s.width:
+        if ((player.y < obs.y + 0.15*s.height) and (player.y + 0.15*s.height > obs.y)):
+            # if player.x > obs.y  and player.x < obs.x + 0.1*s.width or player.x + 0.1*s.width > obs.x and player.x + 0.1*s.width < obs.x + 0.1*s.width:
+            if (player.x < obs.x + 0.1*s.width) and (player.x + 0.1*s.width > obs.x):
                 # print(x,obs_x,enemy_width)
                 s.screen.blit(aux.NAUFRAGADO(),(100,200))
                 pygame.display.update()
                 time.sleep(5)
-                game_loop()
+                game_loop(s, clock)
             # right side
             # if x > obs_x or car_width + x > obs_x:
 
@@ -195,7 +198,7 @@ def game_loop(s,clock):
 
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
-        if mouse[0] > 0.9*s.width and mouse[0] < s.width() and mouse[1] > 0 and mouse[1] < 0.1*s.height:
+        if mouse[0] > 0.9*s.width and mouse[0] < s.width and mouse[1] > 0 and mouse[1] < 0.1*s.height:
             pygame.draw.rect(s.screen,aux.light_blue,(0.9*s.width,0,0.1*s.width,0.1*s.height))
             if click == (1,0,0):
                 paused(s,clock)
@@ -209,7 +212,7 @@ def game_loop(s,clock):
 
         #updating the game
         pygame.display.update()
-        clock.tick(100)
+        clock.tick(10)
 
 
 def background(s):
@@ -243,8 +246,8 @@ def paused(s, clock):
 
         largetext = pygame.font.Font("freesansbold.ttf",115)
         textSurf,textRect = aux.text_object("PAUSED", largetext)
-        textRect.center = ((s.width/2),(s.height/2))
-        aux.screen.blit(textSurf,textRect)
+        textRect.center = ((s.width/2),(s.height/8))
+        s.screen.blit(textSurf,textRect)
 
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()
@@ -267,15 +270,15 @@ def paused(s, clock):
             if click == (1,0,0):
                 game_loop()
         else:
-            pygame.draw.rect(aux.screen,aux.blue,(350,450,150,50))
+            pygame.draw.rect(s.screen,aux.blue,(350,450,150,50))
         smallText = pygame.font.Font("freesansbold.ttf",20)
         textSurf,textRect = aux.text_object("RESTART", smallText)
         textRect.center = ((350+(150/2)),(450+(50/2)))
-        aux.screen.blit(textSurf, textRect)
+        s.screen.blit(textSurf, textRect)
 
         # for main menu
         if mouse[0] > 600 and mouse[0] < 750 and mouse[1] > 450 and mouse[1] < 500:
-            pygame.draw.rect(aux.screen,aux.light_red,(600,450,150,50))
+            pygame.draw.rect(s.screen,aux.light_red,(600,450,150,50))
             if click == (1,0,0):
                 intro_page()
         else:
@@ -283,7 +286,7 @@ def paused(s, clock):
         smallText = pygame.font.Font("freesansbold.ttf",20)
         textSurf,textRect = aux.text_object("MAIN MENU", smallText)
         textRect.center = ((600+(150/2)),(450+(50/2)))
-        aux.screen.blit(textSurf, textRect)
+        s.screen.blit(textSurf, textRect)
 
         pygame.display.update()
         clock.tick(30)

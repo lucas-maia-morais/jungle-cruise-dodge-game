@@ -15,7 +15,7 @@ cruise = pygame.image.load("images/cruise.png")
 
 # text_object_function
 def text_object(text, font):
-    textSurface = font.render(text, True, (0,0,0))
+    textSurface = font.render(text, True, (255,255,255))
     return textSurface, textSurface.get_rect()
 
 def ENCALHOU():

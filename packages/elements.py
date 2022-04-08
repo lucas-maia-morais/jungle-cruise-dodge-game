@@ -38,3 +38,9 @@ class Player(Elements):
 class Obstacle(Elements):
     def player():
         return False
+
+    def show(self,s):
+        # image appearing
+        cruise = pygame.transform.rotate(aux.cruise, -90)
+        cruise = pygame.transform.scale(cruise, (s.width*0.1, s.height*0.15))
+        s.screen.blit(cruise,(self.x,self.y))
