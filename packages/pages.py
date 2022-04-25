@@ -5,64 +5,22 @@ import random
 import time
 
 import packages.aux as aux
-import packages.environment as environment
+# import packages.environment as environment
+from packages.environment import Environment
 import packages.elements as elements
 
 def intro_page(s,clock):
-    intro = True
     background_font_path = "font/quicksilver-fast-font/QuicksilverFastRegular-DO3oE.ttf"
     intro_image = pygame.image.load("images/background.jpg")
     intro_image = pygame.transform.scale(intro_image,s.dimensions)
 
-    while intro:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-                sys.exit()
-        s.screen.blit(intro_image,(0,0))
-        font = pygame.font.Font(background_font_path, 50)
-        title = font.render("Jungle Cruise Game", True, (192,192,192))
-        s.screen.blit(title,(50,50))
-        mouse = pygame.mouse.get_pos()
-        click = pygame.mouse.get_pressed()
+    s.screen.blit(intro_image,(0,0))
+    font = pygame.font.Font(background_font_path, 50)
+    title = font.render("Jungle Cruise Game", True, (192,192,192))
+    s.screen.blit(title,(50,50))
 
-        if mouse[0] > 80 and mouse[0] < 230 and mouse[1] > 500 and mouse[1] < 550:
-            pygame.draw.rect(s.screen, aux.light_green, (80,500,150,50))
-            if click == (True, False, False):
-                countdown(s,clock)
-        else:
-            pygame.draw.rect(s.screen,aux.green,(80,500,150,50))
-
-        smallText = pygame.font.Font("freesansbold.ttf", 20)
-        textSurface, textRect = aux.text_object("START", smallText)
-        textRect.center = ((80 + (150/2)),(500+(50/2)))
-        s.screen.blit(textSurface,textRect)
-        
-        if 470 > mouse[0] > 320 and 550 > mouse[1] > 500:
-            pygame.draw.rect(s.screen,aux.light_blue,(320,500,150,50))
-        else:
-            pygame.draw.rect(s.screen,aux.blue,(320,500,150,50))
-
-        smallText = pygame.font.Font("freesansbold.ttf", 20)
-        textSurface, textRect = aux.text_object("INSTRUCTIONS", smallText)
-        textRect.center = ((320 + (150/2)),(500+(50/2)))
-        s.screen.blit(textSurface,textRect)
-
-        if 580 + 150 > mouse[0] > 580 and 500 + 50 > mouse[1] > 500:
-            pygame.draw.rect(s.screen,aux.light_red,(580,500,150,50))
-            if click == (1,0,0):
-                pygame.quit()
-                quit()
-        else:
-            pygame.draw.rect(s.screen,aux.red,(580,500,150,50))
-
-        smallText = pygame.font.Font("freesansbold.ttf", 20)
-        textSurface, textRect = aux.text_object("QUIT", smallText)
-        textRect.center = ((580 + (150/2)),(500+(50/2)))
-        s.screen.blit(textSurface,textRect)
-
-        pygame.display.update()
+    env = Environment()
+    env.intro_loop(s,clock)
 
 
 def countdown(s,clock):
@@ -105,7 +63,7 @@ def countdown_background(s):
 
 def game_loop(s,clock):
 
-    env = environment.Environment()
+    env = Environment()
     boat = pygame.transform.scale(aux.boat, (s.width*0.1, s.height*0.15))
     player = elements.Player(s.width*0.45, s.height*0.8)
     x_change = 0
@@ -118,7 +76,7 @@ def game_loop(s,clock):
     while not env.bumped:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                print("Clicked")
+                # print("Clicked")
                 env.bumped = True
 
             # moving in x-y coordinates
@@ -167,7 +125,7 @@ def game_loop(s,clock):
             time.sleep(5)
             game_loop(s,clock)
 
-        print(obs.y)
+        # print(obs.y)
 
         if obs.y > s.height:
             obs_y = 0 - 0.15*s.height
@@ -175,7 +133,7 @@ def game_loop(s,clock):
             obs = elements.Obstacle(obs_x, obs_y)
             env.car_passed += 1
             env.score = env.car_passed * 10
-            if int(env.car_passed) % 10 == 0:
+            if int(env.car_passed) % 5 == 0:
                 env.level += 1
                 env.obstacle_speed += 2
                 myfont = pygame.font.SysFont(None,100)
