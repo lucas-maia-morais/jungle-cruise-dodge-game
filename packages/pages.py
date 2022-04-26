@@ -75,62 +75,9 @@ def score_card(s, obstacle_passed, score, level):
     s.screen.blit(score, (0,int(100*s.height/600)))
     s.screen.blit(level, (0,int(150*s.height/600)))
 
-def paused(s, clock):
-    pause = True
-    while pause:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-                sys.exit()
-
-        pause_image = pygame.image.load("images/jungle-cruise.jpg")
-        pause_image = pygame.transform.scale(pause_image,s.dimensions)
-        s.screen.blit(pause_image,(0,0))
-
-        largetext = pygame.font.Font("freesansbold.ttf",115)
-        textSurf,textRect = aux.text_object("PAUSED", largetext)
-        textRect.center = ((s.width/2),(s.height/8))
-        s.screen.blit(textSurf,textRect)
-
-        mouse = pygame.mouse.get_pos()
-        click = pygame.mouse.get_pressed()
-
-        # for continue
-        if mouse[0] > 100 and mouse[0] < 250 and mouse[1] > 450 and mouse[1] < 500:
-            pygame.draw.rect(s.screen,aux.light_green,(100,450,150,50))
-            if click == (1,0,0):
-                pause = False
-        else:
-            pygame.draw.rect(s.screen,aux.green,(100,450,150,50))
-        smallText = pygame.font.Font("freesansbold.ttf",20)
-        textSurf,textRect = aux.text_object("CONTINUE", smallText)
-        textRect.center = ((100+(150/2)),(450+(50/2)))
-        s.screen.blit(textSurf, textRect)
-
-        # for restart
-        if mouse[0] > 350 and mouse[0] < 500 and mouse[1] > 450 and mouse[1] < 500:
-            pygame.draw.rect(s.screen,aux.light_blue,(350,450,150,50))
-            if click == (1,0,0):
-                game_loop()
-        else:
-            pygame.draw.rect(s.screen,aux.blue,(350,450,150,50))
-        smallText = pygame.font.Font("freesansbold.ttf",20)
-        textSurf,textRect = aux.text_object("RESTART", smallText)
-        textRect.center = ((350+(150/2)),(450+(50/2)))
-        s.screen.blit(textSurf, textRect)
-
-        # for main menu
-        if mouse[0] > 600 and mouse[0] < 750 and mouse[1] > 450 and mouse[1] < 500:
-            pygame.draw.rect(s.screen,aux.light_red,(600,450,150,50))
-            if click == (1,0,0):
-                intro_page()
-        else:
-            pygame.draw.rect(s.screen,aux.red,(600,450,150,50))
-        smallText = pygame.font.Font("freesansbold.ttf",20)
-        textSurf,textRect = aux.text_object("MAIN MENU", smallText)
-        textRect.center = ((600+(150/2)),(450+(50/2)))
-        s.screen.blit(textSurf, textRect)
-
-        pygame.display.update()
-        clock.tick(10)
+def paused(env,s,clock):
+    pause_image = pygame.image.load("images/jungle-cruise.jpg")
+    pause_image = pygame.transform.scale(pause_image,s.dimensions)
+    s.screen.blit(pause_image,(0,0))
+    
+    env.pause_loop(s,clock)

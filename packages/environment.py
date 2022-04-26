@@ -71,8 +71,7 @@ class Environment:
     
     def inside_check(self,s,clock):
         if self.player.x > (0.85 - self.player.width/2)*s.width or self.player.x < (0.15 + self.player.width/2)*s.width:            
-            s.screen.blit(events.ENCALHOU(), (s.width*0.1,s.height*0.5))
-            pygame.display.update()
+            events.event_message(s,'Encalhou')
             time.sleep(5)
             self.game_loop(s,clock)
     
@@ -86,10 +85,7 @@ class Environment:
                 if int(self.car_passed) % 10 == 0:
                     self.level += 1
                     self.obstacle_speed += 2
-                    myfont = pygame.font.SysFont(None,100)
-                    level_text = myfont.render("Level "+str(self.level), 1, (0,0,0))
-                    s.screen.blit(level_text,(s.width*0.1,s.height*0.5))
-                    pygame.display.update()
+                    events.event_message(s,"Level "+str(self.level))
                     time.sleep(3)
 
         for obs in to_destroy: 
@@ -100,8 +96,7 @@ class Environment:
         for obs in self.obstacles.values():
             if ((self.player.y < obs.y + 0.15*s.height) and (self.player.y + 0.15*s.height > obs.y)):
                     if (self.player.x < obs.x + 0.1*s.width) and (self.player.x + 0.1*s.width > obs.x):
-                        s.screen.blit(events.NAUFRAGADO(),(100,200))
-                        pygame.display.update()
+                        events.event_message(s,'Naufragado')
                         time.sleep(5)
                         self.game_loop(s, clock)
 
@@ -117,7 +112,7 @@ class Environment:
             pygame.draw.rect(s.screen, button['alt_color'], (x0,y0,x1-x0,y1-y0))
             if self._click == (True, False, False):
                 for f in button['fs']:
-                    eval(f)
+                    exec(f)
         else:
             pygame.draw.rect(s.screen,button['color'],(x0,y0,x1-x0,y1-y0))
 
@@ -125,20 +120,6 @@ class Environment:
         textSurface, textRect = events.text_object(button['text'], smallText)
         textRect.center = ((x0+x1)/2,(y0+y1)/2)
         s.screen.blit(textSurface,textRect)
-
-    def intro_loop(self,s,clock):
-        intro = True
-        while intro:
-            for event in pygame.event.get():
-                events.quit_event(event)
-            self._mouse = pygame.mouse.get_pos()
-            self._click = pygame.mouse.get_pressed()
-
-            self.screen_button(s, clock, 'start')
-            self.screen_button(s, clock, 'instruction')
-            self.screen_button(s, clock, 'quit')
-
-            pygame.display.update()
     
     def game_loop(self,s,clock):
         boat = pygame.transform.scale(aux.boat, (s.width*0.1, s.height*0.15))
@@ -206,3 +187,20 @@ class Environment:
             #updating the game
             pygame.display.update()
             clock.tick(20)
+
+    def pause_loop(self,s,clock):
+        self._pause = True
+        while self._pause:
+            for event in pygame.event.get():
+                events.quit_event(event)
+
+            events.event_message(s,'PAUSED')
+
+            self._mouse = pygame.mouse.get_pos()
+            self._click = pygame.mouse.get_pressed()
+            self.screen_button(s, clock, 'continue')
+            self.screen_button(s, clock, 'restart')
+            self.screen_button(s, clock, 'menu')
+
+            pygame.display.update()
+            clock.tick(10)
