@@ -5,183 +5,57 @@ import random
 import time
 
 import packages.aux as aux
-# import packages.environment as environment
+import packages.events as events
+from packages.elements import Elements
 from packages.environment import Environment
-import packages.elements as elements
 
-def intro_page(s,clock):
+
+
+def intro_page(env,s,clock):
     background_font_path = "font/quicksilver-fast-font/QuicksilverFastRegular-DO3oE.ttf"
     intro_image = pygame.image.load("images/background.jpg")
     intro_image = pygame.transform.scale(intro_image,s.dimensions)
 
     s.screen.blit(intro_image,(0,0))
-    font = pygame.font.Font(background_font_path, 50)
+    font = pygame.font.Font(background_font_path, int(50*s.height/600))
+    dim = font.size("Jungle Cruise Game")
+    print(dim)
     title = font.render("Jungle Cruise Game", True, (192,192,192))
-    s.screen.blit(title,(50,50))
+    print((int((s.width-dim[0])/2),int(50*s.height/600)))
+    print(s.width)
+    s.screen.blit(title,(int((s.width-dim[0])/2),int(50*s.height/600)))
 
-    env = Environment()
     env.intro_loop(s,clock)
 
 
-def countdown(s,clock):
+def countdown(env,s,clock):
     countdown = True
     while countdown:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-                sys.exit()
+            events.quit_event(event)
         
         countdown = ['3','2','1','GO!']
         for count in countdown:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    events.quit_event(event)
+
             s.screen.fill((30,116,187))
-            countdown_background(s)
-            largetext = pygame.font.Font("freesansbold.ttf",115)
-            textSurf,textRect = aux.text_object(count,largetext)
+            background(s)
+            score_card(s, 0, 0, 0)
+            largetext = pygame.font.Font("freesansbold.ttf",int(115*s.height/600))
+            textSurf,textRect = events.text_object(count,largetext)
             textRect.center = ((s.width/2),(s.height/2))
             s.screen.blit(textSurf,textRect)
 
             pygame.display.update()
             clock.tick(1)
         
-        game_loop(s,clock)
-
-def countdown_background(s):
-    background(s)
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            quit()
-            sys.quit()
-    x = (s.width*0.45)
-    y = (s.height*0.8)
-
-    boat = pygame.transform.scale(aux.boat, (s.width*0.1, s.height*0.15))
-    s.screen.blit(boat,(x,y))
-    score_card(s, 0, 0, 0)
+        game_page(env,s,clock)
 
 
-def game_loop(s,clock):
-
-    env = Environment()
-    boat = pygame.transform.scale(aux.boat, (s.width*0.1, s.height*0.15))
-    player = elements.Player(s.width*0.45, s.height*0.8)
-    x_change = 0
-    y_change = 0
-    obs = elements.Obstacle(random.uniform(0.15, 0.75)*s.width, 0)
-    type = random.randint(1,3)
-    obs2 = elements.Obstacle(random.uniform(0.15, 0.75)*s.width, -random.uniform(0, 0.3)*s.width)
-
-    #close button
-    while not env.bumped:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                # print("Clicked")
-                env.bumped = True
-
-            # moving in x-y coordinates
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    x_change = -0.05*s.width
-                if event.key == pygame.K_RIGHT:
-                    x_change =  0.05*s.width
-                if event.key == pygame.K_UP:
-                    y_change = -0.05*s.height
-                if event.key == pygame.K_DOWN:
-                    y_change =  0.05*s.height
-                if event.key == pygame.K_s:
-                    env.obstacle_speed += 2
-                if event.key == pygame.K_b:
-                    env.obstacle_speed -= 2
-            
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                    x_change = 0
-                if event.key == pygame.K_UP or event.key == pygame.K_DOWN:
-                    y_change = 0
-        
-        player.x += x_change
-        player.y += y_change
-
-        
-        background(s)
-        obs.show(s)
-        obs2.show(s, type)
-
-        # position of obstacle
-        obs.y += env.obstacle_speed
-        obs2.y += env.obstacle_speed
-
-        # calling to print player
-        player.show(s)
-
-        # calling score_card function
-        score_card(s, env.car_passed, env.score, env.level)
-
-
-        if player.x > (0.85 - player.width/2)*s.width or player.x < (0.15 + player.width/2)*s.width:            
-            s.screen.blit(aux.ENCALHOU(), (s.width*0.1,s.height*0.5))
-            pygame.display.update()
-            time.sleep(5)
-            game_loop(s,clock)
-
-        # print(obs.y)
-
-        if obs.y > s.height:
-            obs_y = 0 - 0.15*s.height
-            obs_x = random.uniform(0.15, 0.75)*s.width
-            obs = elements.Obstacle(obs_x, obs_y)
-            env.car_passed += 1
-            env.score = env.car_passed * 10
-            if int(env.car_passed) % 5 == 0:
-                env.level += 1
-                env.obstacle_speed += 2
-                myfont = pygame.font.SysFont(None,100)
-                level_text = myfont.render("Level "+str(env.level), 1, (0,0,0))
-                s.screen.blit(level_text,(s.width*0.1,s.height*0.5))
-                pygame.display.update()
-                time.sleep(3)
-
-        if obs2.y > s.height:
-            type = random.randint(1,3)
-            obs_y = 0 - random.uniform(0.15, 0.5)*s.height
-            obs_x = random.uniform(0.15, 0.75)*s.width
-            obs2 = elements.Obstacle(obs_x, obs_y)
-
-        if ((player.y < obs.y + 0.15*s.height) and (player.y + 0.15*s.height > obs.y)):
-            # if player.x > obs.y  and player.x < obs.x + 0.1*s.width or player.x + 0.1*s.width > obs.x and player.x + 0.1*s.width < obs.x + 0.1*s.width:
-            if (player.x < obs.x + 0.1*s.width) and (player.x + 0.1*s.width > obs.x):
-                # print(x,obs_x,enemy_width)
-                s.screen.blit(aux.NAUFRAGADO(),(100,200))
-                pygame.display.update()
-                time.sleep(5)
-                game_loop(s, clock)
-            # right side
-            # if x > obs_x or car_width + x > obs_x:
-
-            # left side:
-            # if x < obs_x + obs_width or x+car_width < obs_x + enemy_width
-
-        pygame.draw.rect(s.screen,aux.blue,(0.9*s.width,0,0.1*s.width,0.1*s.height))
-
-        mouse = pygame.mouse.get_pos()
-        click = pygame.mouse.get_pressed()
-        if mouse[0] > 0.9*s.width and mouse[0] < s.width and mouse[1] > 0 and mouse[1] < 0.1*s.height:
-            pygame.draw.rect(s.screen,aux.light_blue,(0.9*s.width,0,0.1*s.width,0.1*s.height))
-            if click == (1,0,0):
-                paused(s,clock)
-        else:
-            pygame.draw.rect(s.screen,aux.blue,(0.9*s.width,0,0.1*s.width,0.1*s.height))
-
-        smalltext = pygame.font.Font("freesansbold.ttf",30)
-        textSurf, textRect = aux.text_object("PAUSE",smalltext)
-        textRect.center = ((0.9+0.1/2)*s.width,(0+(0.1/2)*s.height))
-        s.screen.blit(textSurf, textRect)
-
-        #updating the game
-        pygame.display.update()
-        clock.tick(20)
-
+def game_page(env,s,clock):
+    env.game_loop(s,clock)
 
 def background(s):
     s.screen.fill((30,116,187))
@@ -197,9 +71,9 @@ def score_card(s, obstacle_passed, score, level):
     passed = font.render("Passed: "+str(obstacle_passed), True, (255,255,255))
     score = font.render("Score: "+str(score), True, (255,255,255))
     level = font.render("LEVEL: "+str(level), True, (255,255,255))
-    s.screen.blit(passed, (0,50))
-    s.screen.blit(score, (0,100))
-    s.screen.blit(level, (0,150))
+    s.screen.blit(passed, (0,int(50*s.height/600)))
+    s.screen.blit(score, (0,int(100*s.height/600)))
+    s.screen.blit(level, (0,int(150*s.height/600)))
 
 def paused(s, clock):
     pause = True
