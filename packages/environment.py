@@ -120,6 +120,20 @@ class Environment:
         textSurface, textRect = events.text_object(button['text'], smallText)
         textRect.center = ((x0+x1)/2,(y0+y1)/2)
         s.screen.blit(textSurface,textRect)
+
+    def intro_loop(self,s,clock):
+        intro = True
+        while intro:
+            for event in pygame.event.get():
+                events.quit_event(event)
+            self._mouse = pygame.mouse.get_pos()
+            self._click = pygame.mouse.get_pressed()
+
+            self.screen_button(s, clock, 'start')
+            self.screen_button(s, clock, 'instruction')
+            self.screen_button(s, clock, 'quit')
+
+            pygame.display.update()
     
     def game_loop(self,s,clock):
         boat = pygame.transform.scale(aux.boat, (s.width*0.1, s.height*0.15))
