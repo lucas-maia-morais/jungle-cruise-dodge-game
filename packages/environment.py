@@ -19,9 +19,15 @@ class Environment:
     def generate_obstacle(self, s):
         self.obs_id += 1
         obs_type = random.randint(0,3)
-        obs = Elements.Obstacle(self.obs_id, obs_type, random.uniform(0.15, 0.75)*s.width, -random.uniform(0, 0.3)*s.width)
+        obs = Elements.Obstacle(self.obs_id, obs_type, random.uniform(0.15, 0.75)*s.width, -random.uniform(0, 0.5)*s.width)
         self.obstacles[self.obs_id] = obs
         return obs
+
+    def new_level(self,s):
+        self.level += 1
+        self.obstacle_speed += self.level
+        if self.level % 2:
+            self.generate_obstacle(s)
 
     def destroy_obstacle(self, obs):
         self.obstacles.pop(obs.id)
@@ -34,18 +40,21 @@ class Environment:
     
     def renew_obstacles(self,s,clock):
         to_destroy = []
+        new_level = False
         for obs in self.obstacles.values():
             if obs.y > s.height:
                 to_destroy.append(obs)
                 self.obstacles_passed += 1
-                self.score = self.obstacles_passed * 10
-                if int(self.obstacles_passed) % 10 == 0:
-                    self.level += 1
-                    self.obstacle_speed += 2
-                    events.event_message(s,"Level "+str(self.level))
-                    time.sleep(3)
+                self.score += self.obstacle_speed
+                if self.obstacles_passed % 2 == 0:
+                    new_level = True
 
-        for obs in to_destroy: 
+        if new_level:
+            self.new_level(s)
+            events.event_message(s,"Level "+str(self.level))
+            time.sleep(3)
+
+        for obs in to_destroy:
             self.destroy_obstacle(obs)
             self.generate_obstacle(s)
     

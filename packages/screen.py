@@ -139,7 +139,7 @@ class Screen:
         
         self.env.obstacles.clear()
         self.env.player = Elements.Player(self.width*0.45, self.height*0.8)
-        obs = self.env.generate_obstacle(self)
+        self.env.generate_obstacle(self)
 
         #close button
         while not self.env.bumped:
@@ -170,13 +170,13 @@ class Screen:
             
             self.env.player.x += x_change
             self.env.player.y += y_change
-            
+
             self.background()
-            obs.show(self)
 
             # position of obstacles
             for obs in self.env.obstacles.values():
                 obs.y += self.env.obstacle_speed
+                obs.show(self)
 
             # calling to print player
             self.env.player.show(self)
