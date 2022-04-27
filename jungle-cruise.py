@@ -1,7 +1,5 @@
 import pygame
-import packages.pages as pages
 import packages.screen as screen
-from packages.environment import Environment
 
 if __name__ == '__main__':
 
@@ -14,9 +12,8 @@ if __name__ == '__main__':
 
     # Inicializar tela
 
-    s = screen.Screen()
-    env = Environment()
-    pages.intro_page(env, s,clock)
+    s = screen.Screen(clock)
+    s.intro_page()
 
     pygame.quit()
     quit()
