@@ -50,7 +50,7 @@ class Screen:
         self.screen.blit(intro_image,(0,0))
         font = pygame.font.Font(background_font_path, int(50*self.height/600))
         dim = font.size("Jungle Cruise Game")
-        title = font.render("Jungle Cruise Game", True, (192,192,192))
+        title = font.render("Jungle Cruise Game", True, (255,200,0))
         self.screen.blit(title,(int((self.width-dim[0])/2),int(50*self.height/600)))
 
         self.intro_loop()
@@ -66,7 +66,7 @@ class Screen:
             self.click = pygame.mouse.get_pressed()
 
             self.screen_button('start')
-            self.screen_button('instruction')
+            #self.screen_button('instruction')
             self.screen_button('quit')
 
             pygame.display.update()
@@ -214,6 +214,30 @@ class Screen:
                 events.quit_event(event)
 
             events.event_message(self,'PAUSED')
+
+            self.mouse = pygame.mouse.get_pos()
+            self.click = pygame.mouse.get_pressed()
+            self.screen_button('continue')
+            self.screen_button('restart')
+            self.screen_button('menu')
+
+            pygame.display.update()
+            self.clock.tick(10)
+
+    def win(self):
+        win_image = pygame.image.load("images/background.jpg")
+        win_image = pygame.transform.scale(win_image,self.dimensions)
+        self.screen.blit(win_image,(0,0))
+        
+        self.pause_loop()
+    
+    def win_loop(self):
+        self.pause = True
+        while self.pause:
+            for event in pygame.event.get():
+                events.quit_event(event)
+
+            events.event_message(self,'YOU WON!')
 
             self.mouse = pygame.mouse.get_pos()
             self.click = pygame.mouse.get_pressed()
