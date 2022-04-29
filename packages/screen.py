@@ -131,6 +131,8 @@ class Screen:
         self.screen.blit(level, (0,int(150*self.height/600)))
 
     def game_page(self):
+        ship_horn_sound = pygame.mixer.Sound('soundtrack/BARCO APITANDO.mp3')
+        ship_horn_sound.play()
         self.game_loop()
 
     def game_loop(self):
@@ -193,6 +195,7 @@ class Screen:
             self.click = pygame.mouse.get_pressed()
             self.screen_button('pause')
 
+
             #updating the game
             pygame.display.update()
             self.clock.tick(20)
@@ -213,7 +216,12 @@ class Screen:
             for event in pygame.event.get():
                 events.quit_event(event)
 
-            events.event_message(self,'PAUSED')
+            # events.event_message(self,'PAUSED')
+            font = pygame.font.Font("font/kahlil-font/Kahlil-YzP9L.ttf", int(75*self.height/600))
+            dim = font.size("PAUSED")
+            title = font.render("PAUSED", True, (255,200,0))
+            self.screen.blit(title,(int((self.width-dim[0])/2),int(50*self.height/600)))
+
 
             self.mouse = pygame.mouse.get_pos()
             self.click = pygame.mouse.get_pressed()
@@ -224,12 +232,9 @@ class Screen:
             pygame.display.update()
             self.clock.tick(10)
 
-    def win(self):
-        win_image = pygame.image.load("images/background.jpg")
-        win_image = pygame.transform.scale(win_image,self.dimensions)
-        self.screen.blit(win_image,(0,0))
-        
-        self.pause_loop()
+    def win_page(self):
+
+        self.win_loop()
     
     def win_loop(self):
         self.pause = True

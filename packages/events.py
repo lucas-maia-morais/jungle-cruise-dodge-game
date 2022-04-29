@@ -6,7 +6,7 @@ def text_object(text, font):
     return textSurface, textSurface.get_rect()
 
 def event_message(s,msg):
-    myfont = pygame.font.SysFont("None", int(s.height/6))
+    myfont = pygame.font.Font("font/kahlil-font/Kahlil-YzP9L.ttf", int(s.height/6))
     game_over = myfont.render(msg, 1, (0,0,0))
     dim = game_over.get_size()
     s.screen.blit(game_over, (int((s.width-dim[0])/2),int((s.height-dim[1])/2)))

@@ -1,5 +1,6 @@
 import random
 import time
+import pygame
 import packages.events as events
 import packages.elements as Elements
 
@@ -51,8 +52,11 @@ class Environment:
 
         if new_level:
             self.new_level(s)
-            events.event_message(s,"Level "+str(self.level))
-            time.sleep(3)
+            if self.level  != 10:
+                events.event_message(s,"Level "+str(self.level))
+                time.sleep(3)
+            else:
+                s.win_loop()
 
         for obs in to_destroy:
             self.destroy_obstacle(obs)
@@ -62,6 +66,12 @@ class Environment:
         for obs in self.obstacles.values():
             if ((self.player.y < obs.y + 0.15*s.height) and (self.player.y + 0.15*s.height > obs.y)):
                     if (self.player.x < obs.x + 0.1*s.width) and (self.player.x + 0.1*s.width > obs.x):
+                        if obs.obs_type == 3:
+                            aligator_sound = pygame.mixer.Sound('soundtrack/JACARE.mp3')
+                            aligator_sound.play()
+                        else:
+                            crash_sound = pygame.mixer.Sound('soundtrack/WoodCrashesDistant FS022705.mp3')
+                            crash_sound.play()
                         events.event_message(s,'Naufragado')
                         time.sleep(5)
                         s.countdown()
