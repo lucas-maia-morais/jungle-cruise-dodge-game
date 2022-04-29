@@ -5,6 +5,30 @@ Requirements:
 - Python 3.7
 - Pygame
 
+------------------------------------------------------------- O que está no Github
+
+-- Diretórios
+
+font:
+
+Esse diretório contém fontes de letras que foram usadas para os textos do jogo, i.e. arquivos carregados com as fontes dos títulos, botões...
+
+images:
+
+Nesse diretório há as imagens carregadas para o jogo, imagem de fundo, obstáculos, navio do jogador...
+
+soundtrack:
+
+Nesse diretório há os sons utilizados no jogo, tanto de música de fundo quanto de efeitos sonoros.
+
+packages:
+
+Nesse diretório estão implementadas as classes do jogo e seus métodos utilizados. No arquivo elements.py há os elementos do jogo: obstáculos e o jogador. No arquivo enviroment.py há o ambiente da mecânica do jogo: geração e destruição de obstáculos, dinâmica de níveis e checagem de colisão do jogador com obstáculo. No arquivo messeges há uma implementação de mensagens que serão exibidas ao longo do jogo. Já no diretório Screen é organizado o output das telas do jogo, i.e. menu inicial, fundo do jogo, atualização do placar, música de fundo, implementação da movimentação com teclado na tela, configurações de pause e vitória do jogo. O arquivo aux.py serve apenas para algumas defnições de variáveis de cor e nomes de arquivos carregados e dicionário para os botões do jogo.
+
+--Arquivos
+
+Há o arquivo da apresentação final e do jogo jungle-cruise.py.
+
 ------------------------------------------------------------- Documentação Jungle Cruise
 
 Autores: Lucas Maia, Luca Rassi e Gabriel Lucena
