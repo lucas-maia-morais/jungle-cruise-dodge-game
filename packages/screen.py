@@ -11,6 +11,7 @@ class Screen:
         self.clock = clock
         self.__width = width
         self.__height = height
+        self.music_choice = 0
         self.__screen = pygame.display.set_mode((self.width, self.height))
 
     def change_display(self):
@@ -42,7 +43,25 @@ class Screen:
         self.__height = height
         self.change_display()
 
+    def change_music(self):
+        self.music_choice = (self.music_choice + 1) % 3
+        print(self.music_choice)
+        if self.music_choice == 0:
+            pygame.mixer.music.stop()
+            pygame.mixer.music.load('soundtrack/Surrounded-by-the-Enemy_TTX018501(1).mp3')
+            pygame.mixer.music.play(-1)
+        elif self.music_choice == 1:
+            pygame.mixer.music.stop()
+        elif self.music_choice == 2:
+            pygame.mixer.music.stop()
+            pygame.mixer.music.load('soundtrack/mc-poze-nos-anos-80.mp3')
+            pygame.mixer.music.play(-1)
+
     def intro_page(self):
+        # Soundtrack
+        self.music = pygame.mixer.music.load('soundtrack/Surrounded-by-the-Enemy_TTX018501(1).mp3')
+        pygame.mixer.music.play(-1)
+
         background_font_path = "font/kahlil-font/Kahlil-YzP9L.ttf"
         intro_image = pygame.image.load("images/background.jpg")
         intro_image = pygame.transform.scale(intro_image,self.dimensions)
@@ -66,7 +85,7 @@ class Screen:
             self.click = pygame.mouse.get_pressed()
 
             self.screen_button('start')
-            #self.screen_button('instruction')
+            self.screen_button('mute')
             self.screen_button('quit')
 
             pygame.display.update()
@@ -242,6 +261,8 @@ class Screen:
             for event in pygame.event.get():
                 events.quit_event(event)
 
+            tree_win = pygame.transform.scale(aux.life_tree, (self.width*0.3, self.height*0.3))
+            self.screen.blit(tree_win,(self.width*0.35, self.height*0.1))
             events.event_message(self,'YOU WON!')
 
             self.mouse = pygame.mouse.get_pos()

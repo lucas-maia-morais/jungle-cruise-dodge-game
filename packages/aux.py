@@ -15,14 +15,15 @@ cruise = pygame.image.load("images/cruise.jpg")
 stone = pygame.image.load("images/stone.jpg")
 pirate = pygame.image.load("images/pirate.jpg")
 aligator = pygame.image.load("images/aligator.jpg")
+life_tree = pygame.image.load("images/tree.jpg")
 
 # info for buttons
 buttons = {
     'start': {'text': 'START', 'dim': (80/800, 500/600, 240/800, 550/600), 'color': green, 'alt_color': light_green, 'fs': ['self.countdown()']},
-    'instruction': {'text': 'INSTRUCTIONS', 'dim': (320/800, 500/600, 480/800, 550/600), 'color': blue, 'alt_color': light_blue, 'fs': ['print("Instruction")']},
+    'mute': {'text': 'MUTE', 'dim': (320/800, 500/600, 480/800, 550/600), 'color': blue, 'alt_color': light_blue, 'fs': ['time.sleep(0.2)','self.click = (False,False,False)','self.change_music()']},
     'quit': {'text': 'QUIT', 'dim': (560/800, 500/600, 720/800, 550/600), 'color':red, 'alt_color':light_red, 'fs': ['pygame.quit()', 'quit()']},
     'pause': {'text': 'PAUSE', 'dim': (640/800, 1/600, 800/800, 50/600), 'color':blue, 'alt_color':red, 'fs': ['self.paused()']},
     'continue': {'text': 'CONTINUE', 'dim': (80/800, 500/600, 240/800, 550/600), 'color': green, 'alt_color': light_green, 'fs': ['self.pause = False']},
     'restart': {'text': 'RESTART', 'dim': (320/800, 500/600, 480/800, 550/600), 'color': blue, 'alt_color': light_blue, 'fs': ['self.countdown()']},
-    'menu': {'text': 'MAIN MENU', 'dim': (560/800, 500/600, 720/800, 550/600), 'color':red, 'alt_color':light_red, 'fs': ['time.sleep(0.1)','self.click = (False,False,False)','self.intro_page()']},
+    'menu': {'text': 'MAIN MENU', 'dim': (560/800, 500/600, 720/800, 550/600), 'color':red, 'alt_color':light_red, 'fs': ['time.sleep(0.15)','self.click = (False,False,False)','self.intro_page()']},
 }

@@ -47,12 +47,12 @@ class Environment:
                 to_destroy.append(obs)
                 self.obstacles_passed += 1
                 self.score += self.obstacle_speed
-                if self.obstacles_passed % 5 == 0:
+                if self.obstacles_passed % 15 == 0:
                     new_level = True
 
         if new_level:
             self.new_level(s)
-            if self.level  != 10:
+            if self.level  != 3:
                 events.event_message(s,"Level "+str(self.level))
                 time.sleep(3)
             else:
