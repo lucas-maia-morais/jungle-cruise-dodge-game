@@ -11,9 +11,9 @@ light_blue = (0,0,255)
 # loading all images
 forest = pygame.image.load("images/forest.jpg")
 boat = pygame.image.load("images/boat.jpg")
-cruise = pygame.image.load("images/cruise.png")
-stone = pygame.image.load("images/stone.png")
-pirate = pygame.image.load("images/pirate.png")
+cruise = pygame.image.load("images/cruise.jpg")
+stone = pygame.image.load("images/stone.jpg")
+pirate = pygame.image.load("images/pirate.jpg")
 aligator = pygame.image.load("images/aligator.jpg")
 
 # info for buttons

@@ -43,7 +43,7 @@ class Screen:
         self.change_display()
 
     def intro_page(self):
-        background_font_path = "font/quicksilver-fast-font/QuicksilverFastRegular-DO3oE.ttf"
+        background_font_path = "font/kahlil-font/Kahlil-YzP9L.ttf"
         intro_image = pygame.image.load("images/background.jpg")
         intro_image = pygame.transform.scale(intro_image,self.dimensions)
 
@@ -86,7 +86,7 @@ class Screen:
         else:
             pygame.draw.rect(self.screen,button['color'],(x0,y0,x1-x0,y1-y0))
 
-        smallText = pygame.font.Font("freesansbold.ttf", int((y1-y0)/3))
+        smallText = pygame.font.Font("font/kahlil-font/Kahlil-YzP9L.ttf", int((y1-y0)/3))
         textSurface, textRect = events.text_object(button['text'], smallText)
         textRect.center = ((x0+x1)/2,(y0+y1)/2)
         self.screen.blit(textSurface,textRect)
@@ -223,4 +223,3 @@ class Screen:
 
             pygame.display.update()
             self.clock.tick(10)
-
